@@ -96,6 +96,5 @@ const fileSchema = new mongoose.Schema(
 // ⚡ Indexes
 fileSchema.index({ owner: 1, createdAt: -1 });
 fileSchema.index({ "permissions.user": 1 });
-fileSchema.index({ type: 1 });
 
 export const File = mongoose.model("File", fileSchema);
