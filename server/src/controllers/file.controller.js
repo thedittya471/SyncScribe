@@ -1,7 +1,10 @@
 import { apiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/ApiResponse.js";
 import { File } from "../models/file.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import {
+  uploadOnCloudinary,
+  deleteFromCloudinary,
+} from "../utils/cloudinary.js";
 
 const uploadFile = async (req, res) => {
   const localFilePath = req.file?.path;
@@ -235,6 +238,79 @@ const restoreFileFromTrash = async (req, res) => {
     .json(new apiResponse(200, file, "File restored successfully"));
 };
 
+const deleteFilePermanently = async (req, res) => {
+  const { fileId } = req.params;
+
+  const file = await File.findOne({ _id: fileId, owner: req.user._id });
+
+  if (!file) {
+    throw new apiError(404, "File not found or unauthorized");
+  }
+
+  let resourceType = "raw";
+  if (file.type === "image") resourceType = "image";
+  else if (file.type === "video" || file.type === "audio") resourceType = "video";
+
+  await deleteFromCloudinary(file.public_id, resourceType);
+
+  await File.findByIdAndDelete(fileId);
+
+  return res
+    .status(200)
+    .json(new apiResponse(200, {}, "File deleted permanently"));
+};
+
+const emptyTrash = async (req, res) => {
+  const userId = req.user._id;
+
+  const files = await File.find({ owner: userId, isTrashed: true });
+
+  if (files.length === 0) {
+    return res
+      .status(200)
+      .json(new apiResponse(200, {}, "Trash is already empty"));
+  }
+
+  const deletePromises = files.map((file) => {
+    let resourceType = "raw";
+    if (file.type === "image") resourceType = "image";
+    else if (file.type === "video" || file.type === "audio")
+      resourceType = "video";
+    return deleteFromCloudinary(file.public_id, resourceType);
+  });
+
+  await Promise.all(deletePromises);
+
+  await File.deleteMany({ owner: userId, isTrashed: true });
+
+  return res
+    .status(200)
+    .json(new apiResponse(200, {}, "Trash emptied successfully"));
+};
+
+const downloadFile = async (req, res) => {
+  const { fileId } = req.params;
+
+  const file = await File.findOne({ _id: fileId, owner: req.user._id });
+
+  if (!file) {
+    throw new apiError(404, "File not found or unauthorized");
+  }
+
+  const downloadUrl = file.url.replace("/upload/", "/upload/fl_attachment/");
+
+  return res.status(200).json(
+    new apiResponse(
+      200,
+      {
+        downloadUrl,
+        name: file.name,
+      },
+      "Download URL generated successfully",
+    ),
+  );
+};
+
 export {
   uploadFile,
   getFilesByType,
@@ -245,4 +321,7 @@ export {
   moveFileToTrash,
   getTrashedFiles,
   restoreFileFromTrash,
+  deleteFilePermanently,
+  emptyTrash,
+  downloadFile,
 };
