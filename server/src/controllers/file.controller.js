@@ -1,6 +1,7 @@
 import { apiError } from "../utils/ApiError.js";
 import { apiResponse } from "../utils/ApiResponse.js";
 import { File } from "../models/file.model.js";
+import { User } from "../models/user.model.js";
 import {
   uploadOnCloudinary,
   deleteFromCloudinary,
@@ -311,6 +312,135 @@ const downloadFile = async (req, res) => {
   );
 };
 
+const toggleFilePublicStatus = async (req, res) => {
+  const { fileId } = req.params;
+  const { isPublic } = req.body;
+
+  if (typeof isPublic !== "boolean") {
+    throw new apiError(400, "isPublic must be a boolean");
+  }
+
+  const file = await File.findOneAndUpdate(
+    { _id: fileId, owner: req.user._id },
+    { $set: { isPublic } },
+    { new: true },
+  );
+
+  if (!file) {
+    throw new apiError(404, "File not found or unauthorized");
+  }
+
+  return res
+    .status(200)
+    .json(
+      new apiResponse(
+        200,
+        file,
+        `File visibility set to ${isPublic ? "public" : "private"}`,
+      ),
+    );
+};
+
+const updateFilePermissions = async (req, res) => {
+  const { fileId } = req.params;
+  const { email, role } = req.body;
+
+  if (!["viewer", "editor"].includes(role)) {
+    throw new apiError(400, "Invalid role. Use 'viewer' or 'editor'");
+  }
+
+  const userToGrant = await User.findOne({ email });
+  if (!userToGrant) {
+    throw new apiError(404, "User not found");
+  }
+
+  const file = await File.findOne({ _id: fileId, owner: req.user._id });
+  if (!file) {
+    throw new apiError(404, "File not found or unauthorized");
+  }
+
+  if (file.owner.toString() === userToGrant._id.toString()) {
+    throw new apiError(400, "Owner already has full access");
+  }
+
+  // Remove existing permission if any and add new one
+  const updatedFile = await File.findByIdAndUpdate(
+    fileId,
+    {
+      $pull: { permissions: { user: userToGrant._id } },
+    },
+    { new: true },
+  );
+
+  const finalFile = await File.findByIdAndUpdate(
+    fileId,
+    {
+      $push: { permissions: { user: userToGrant._id, role } },
+    },
+    { new: true },
+  ).populate("permissions.user", "username email");
+
+  return res
+    .status(200)
+    .json(new apiResponse(200, finalFile, `Access granted to ${email} as ${role}`));
+};
+
+const removeFilePermission = async (req, res) => {
+  const { fileId } = req.params;
+  const { userId } = req.body;
+
+  const file = await File.findOneAndUpdate(
+    { _id: fileId, owner: req.user._id },
+    {
+      $pull: { permissions: { user: userId } },
+    },
+    { new: true },
+  ).populate("permissions.user", "username email");
+
+  if (!file) {
+    throw new apiError(404, "File not found or unauthorized");
+  }
+
+  return res
+    .status(200)
+    .json(new apiResponse(200, file, "Access removed successfully"));
+};
+
+const getFilesSharedByMe = async (req, res) => {
+  const userId = req.user._id;
+
+  const files = await File.find({
+    owner: userId,
+    isTrashed: false,
+    $or: [
+      { permissions: { $exists: true, $not: { $size: 0 } } },
+      { isPublic: true },
+    ],
+  }).populate("permissions.user", "username email");
+
+  return res
+    .status(200)
+    .json(
+      new apiResponse(200, files, "Files shared by you fetched successfully"),
+    );
+};
+
+const getFilesSharedWithMe = async (req, res) => {
+  const userId = req.user._id;
+
+  const files = await File.find({
+    owner: { $ne: userId },
+    isTrashed: false,
+    "permissions.user": userId,
+  }).populate("owner", "username email");
+
+  return res
+    .status(200)
+    .json(
+      new apiResponse(200, files, "Files shared with you fetched successfully"),
+    );
+};
+
 export {
   uploadFile,
   getFilesByType,
@@ -324,4 +454,9 @@ export {
   deleteFilePermanently,
   emptyTrash,
   downloadFile,
+  toggleFilePublicStatus,
+  updateFilePermissions,
+  removeFilePermission,
+  getFilesSharedByMe,
+  getFilesSharedWithMe,
 };
