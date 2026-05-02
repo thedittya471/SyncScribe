@@ -16,20 +16,22 @@ const fileSchema = new mongoose.Schema(
         "video",
         "audio",
         "pdf",
-        "document",   // doc, docx, txt
-        "spreadsheet",// xls, xlsx, csv
-        "presentation",// ppt, pptx
-        "archive",    // zip, rar
-        "code",       // js, cpp, py, etc.
+        "document",
+        "spreadsheet",
+        "presentation",
+        "archive",
+        "code",
         "other"
       ],
+      index: true
     },
 
     size: {
-      type: Number, // in bytes
+      type: Number,
       required: true,
     },
 
+    // ☁️ Cloudinary
     url: {
       type: String,
       required: true,
@@ -47,6 +49,7 @@ const fileSchema = new mongoose.Schema(
       index: true,
     },
 
+    // 🔐 Permissions
     permissions: [
       {
         user: {
@@ -62,23 +65,37 @@ const fileSchema = new mongoose.Schema(
       },
     ],
 
+    // 🌍 Public
     isPublic: {
       type: Boolean,
       default: false,
+    },
+
+    // 🗑 Trash system
+    isTrashed: {
+      type: Boolean,
+      default: false,
+      index: true
+    },
+
+    trashedAt: {
+      type: Date,
     },
 
     lastAccessedAt: {
       type: Date,
       default: Date.now,
     },
+
   },
   {
     timestamps: true,
   }
 );
 
-fileSchema.index({ owner: 1 });
-fileSchema.index({ "permissions.user": 1 });
+// ⚡ Indexes
 fileSchema.index({ owner: 1, createdAt: -1 });
+fileSchema.index({ "permissions.user": 1 });
+fileSchema.index({ type: 1 });
 
 export const File = mongoose.model("File", fileSchema);
