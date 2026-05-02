@@ -1,0 +1,256 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SyncScribe API Documentation",
+    "version": "1.0.0",
+    "description": "Full API reference for SyncScribe File Management and Sharing Platform"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/api/v1",
+      "description": "Development Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "usr_654..." },
+          "username": { "type": "string", "example": "johndoe" },
+          "email": { "type": "string", "example": "john@example.com" },
+          "fullName": { "type": "string", "example": "John Doe" }
+        }
+      },
+      "File": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "example": "file_abc..." },
+          "name": { "type": "string", "example": "vacation_photo.jpg" },
+          "type": { "type": "string", "example": "image" },
+          "size": { "type": "number", "example": 2048576 },
+          "url": { "type": "string", "example": "https://res.cloudinary.com/..." },
+          "isPublic": { "type": "boolean", "example": false },
+          "isTrashed": { "type": "boolean", "example": false },
+          "owner": { "$ref": "#/components/schemas/User" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "ApiResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": { "type": "integer" },
+          "data": { "type": "object" },
+          "message": { "type": "string" },
+          "success": { "type": "boolean" }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/healthcheck": {
+      "get": {
+        "summary": "Check server health",
+        "tags": ["System"],
+        "responses": { "200": { "description": "Server is running" } }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "summary": "Register user",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object", "required": ["username", "email", "password"], "properties": { "username": { "type": "string" }, "email": { "type": "string" }, "password": { "type": "string" } } } } }
+        },
+        "responses": { "201": { "description": "Registered", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApiResponse" } } } } }
+      }
+    },
+    "/users/login": {
+      "post": {
+        "summary": "Login",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" }, "password": { "type": "string" } } } } }
+        },
+        "responses": { "200": { "description": "Success", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ApiResponse" } } } } }
+      }
+    },
+    "/users/logout": {
+      "post": {
+        "summary": "Logout",
+        "tags": ["Authentication"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Logged out" } }
+      }
+    },
+    "/users/current-user": {
+      "get": {
+        "summary": "Get profile",
+        "tags": ["Authentication"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/upload": {
+      "post": {
+        "summary": "Upload file",
+        "tags": ["Files"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": { "multipart/form-data": { "schema": { "type": "object", "properties": { "file": { "type": "string", "format": "binary" } } } } }
+        },
+        "responses": { "201": { "description": "Uploaded" } }
+      }
+    },
+    "/files/": {
+      "get": {
+        "summary": "List files",
+        "tags": ["Files"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/dashboard": {
+      "get": {
+        "summary": "Dashboard info",
+        "tags": ["Files"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/search": {
+      "get": {
+        "summary": "Search",
+        "tags": ["Files"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "query", "in": "query", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/recent": {
+      "get": {
+        "summary": "Recent files",
+        "tags": ["Files"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/rename/{fileId}": {
+      "patch": {
+        "summary": "Rename",
+        "tags": ["Files"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "fileId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "newName": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/trash/{fileId}": {
+      "patch": {
+        "summary": "Trash",
+        "tags": ["Trash System"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "fileId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/trashed": {
+      "get": {
+        "summary": "List trash",
+        "tags": ["Trash System"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/restore/{fileId}": {
+      "patch": {
+        "summary": "Restore",
+        "tags": ["Trash System"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "fileId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/delete/{fileId}": {
+      "delete": {
+        "summary": "Perm Delete",
+        "tags": ["Trash System"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "fileId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/empty-trash": {
+      "delete": {
+        "summary": "Empty Trash",
+        "tags": ["Trash System"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/download/{fileId}": {
+      "get": {
+        "summary": "Download",
+        "tags": ["Files"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "fileId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/toggle-public/{fileId}": {
+      "patch": {
+        "summary": "Toggle Public",
+        "tags": ["Sharing"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "fileId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "isPublic": { "type": "boolean" } } } } } },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/share/{fileId}": {
+      "patch": {
+        "summary": "Share Access",
+        "tags": ["Sharing"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "fileId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "email": { "type": "string" }, "role": { "type": "string", "enum": ["viewer", "editor"] } } } } } },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/revoke/{fileId}": {
+      "patch": {
+        "summary": "Revoke Access",
+        "tags": ["Sharing"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [{ "name": "fileId", "in": "path", "required": true, "schema": { "type": "string" } }],
+        "requestBody": { "content": { "application/json": { "schema": { "type": "object", "properties": { "userId": { "type": "string" } } } } } },
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/shared-by-me": {
+      "get": {
+        "summary": "Shared By Me",
+        "tags": ["Sharing"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    },
+    "/files/shared-with-me": {
+      "get": {
+        "summary": "Shared With Me",
+        "tags": ["Sharing"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": { "200": { "description": "Success" } }
+      }
+    }
+  }
+}

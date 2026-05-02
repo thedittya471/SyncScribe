@@ -1,8 +1,12 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocument from './docs/swagger.json' with { type: 'json' }
 
 const app = express()
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
 app.use(cors(
     {
