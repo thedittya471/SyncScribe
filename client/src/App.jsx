@@ -1,9 +1,10 @@
 import React from 'react'
-import Dashboard from './pages/Dashboard'
-import Document from './pages/Document'
+import ImagePage from './pages/Image'
 
 const App = () => {
-  return <Document />
+  return (
+    <ImagePage />
+  )
 }
 
 export default App
