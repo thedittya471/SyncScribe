@@ -40,7 +40,7 @@ const ImagePage = () => {
     }, [])
 
     return (
-        <div className="min-h-screen bg-[#F2F4F8] p-8 font-['Poppins',sans-serif]">
+        <div className="w-full font-['Poppins',sans-serif]">
             {/* Animations */}
             <style>{`
         @keyframes fadeInUp {
