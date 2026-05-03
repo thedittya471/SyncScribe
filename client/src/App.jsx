@@ -1,12 +1,8 @@
 import React from 'react'
-import Login from './components/Login'
+import Dashboard from './pages/Dashboard'
 
 const App = () => {
-  return (
-    <div>
-      <Login />
-    </div>
-  )
+  return <Dashboard />
 }
 
 export default App
