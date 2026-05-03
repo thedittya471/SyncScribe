@@ -11,7 +11,23 @@ const uploadFile = async (req, res) => {
   const localFilePath = req.file?.path;
 
   if (!localFilePath) {
-    throw new apiError(400, "File is required");
+    throw new apiError(400, "File is missing");
+  }
+
+  // 🛡️ Storage Limit Check (500MB)
+  const USER_STORAGE_LIMIT = 500 * 1024 * 1024;
+  const totalUsed = await File.aggregate([
+    { $match: { owner: req.user._id } },
+    { $group: { _id: null, total: { $sum: "$size" } } },
+  ]);
+
+  const usedBytes = totalUsed.length > 0 ? totalUsed[0].total : 0;
+  if (usedBytes + req.file.size > USER_STORAGE_LIMIT) {
+    fs.unlinkSync(localFilePath); 
+    throw new apiError(
+      400,
+      `Storage limit exceeded. You have used ${(usedBytes / (1024 * 1024)).toFixed(2)} MB of 500 MB.`,
+    );
   }
 
   const cloudinaryResponse = await uploadOnCloudinary(localFilePath);
