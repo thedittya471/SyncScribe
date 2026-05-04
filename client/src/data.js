@@ -121,3 +121,18 @@ export const mediaFiles = [
   { id: 11, fileName: 'school.vid', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'video' },
   { id: 12, fileName: 'Water.mp4', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'video' },
 ]
+
+export const otherFiles = [
+  { id: 1, fileName: 'App School.cc', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 2, fileName: 'BC company.ddr', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 3, fileName: 'Because i love you.dft', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 4, fileName: 'CompanyANV.cc', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 5, fileName: 'company ABC.cc', fileSize: '6 MB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 6, fileName: 'My CV.drf', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 7, fileName: 'My Jobs.cc', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 8, fileName: 'Photoshop.cc', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 9, fileName: 'Pig Pig Pig.cc', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 10, fileName: 'system.sdr', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 11, fileName: 'school.ddr', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+  { id: 12, fileName: 'Water.ddr', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
+]

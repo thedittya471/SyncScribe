@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard'
 import DocumentPage from './pages/Document'
 import ImagePage from './pages/Image'
 import MediaPage from './pages/Media'
+import OthersPage from './pages/Others'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Layout from './components/Layout'
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/document" element={<DocumentPage />} />
           <Route path="/image" element={<ImagePage />} />
           <Route path="/media" element={<MediaPage />} />
+          <Route path="/others" element={<OthersPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

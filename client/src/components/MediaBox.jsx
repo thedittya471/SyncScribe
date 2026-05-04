@@ -1,5 +1,4 @@
-import React from 'react'
-import { Play, Mic, Music } from 'lucide-react'
+import { Play, Mic, Music, FileQuestion } from 'lucide-react'
 
 const MediaBox = ({ fileName, fileSize, timestamp, fileType }) => {
   const getIcon = () => {
@@ -10,6 +9,8 @@ const MediaBox = ({ fileName, fileSize, timestamp, fileType }) => {
         return { icon: Mic, color: '#56B8FF', bg: 'rgba(86, 184, 255, 0.1)' }
       case 'music':
         return { icon: Music, color: '#36D6B5', bg: 'rgba(54, 214, 181, 0.1)' }
+      case 'other':
+        return { icon: FileQuestion, color: '#C88EEC', bg: 'rgba(200, 142, 236, 0.1)' }
       default:
         return { icon: Play, color: '#FA7275', bg: 'rgba(250, 114, 117, 0.1)' }
     }
