@@ -1,6 +1,13 @@
+import React, { useRef } from 'react'
 import { Play, Mic, Music, FileQuestion } from 'lucide-react'
+import { useFileActions } from '../context/FileActionContext'
 
-const MediaBox = ({ fileName, fileSize, timestamp, fileType }) => {
+const MediaBox = ({ id, fileName, fileSize, timestamp, fileType }) => {
+  const { activeFile, openDropdown } = useFileActions()
+  const cardRef = useRef(null)
+  
+  const isDropdownOpen = activeFile?.id === id
+
   const getIcon = () => {
     switch (fileType) {
       case 'video':
@@ -19,7 +26,11 @@ const MediaBox = ({ fileName, fileSize, timestamp, fileType }) => {
   const { icon: Icon, color, bg } = getIcon()
 
   return (
-    <div className="relative w-[195px] h-[170px] bg-white rounded-[16px] shadow-md font-['Poppins',sans-serif] group cursor-pointer transition-all duration-300 ease-out hover:shadow-xl hover:shadow-black/8 hover:-translate-y-1">
+    <div 
+      ref={cardRef}
+      className={`relative w-[195px] h-[170px] bg-white rounded-[16px] font-['Poppins',sans-serif] group cursor-pointer transition-all duration-300 ease-out 
+      ${isDropdownOpen ? 'z-[110] shadow-2xl scale-[1.02]' : 'z-10 shadow-md hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1'}`}>
+      
       <div className="absolute left-[14px] top-[14px] transition-transform duration-300 group-hover:scale-105">
         <div 
           className="w-[68px] h-[68px] rounded-full flex items-center justify-center"
@@ -29,7 +40,20 @@ const MediaBox = ({ fileName, fileSize, timestamp, fileType }) => {
         </div>
       </div>
 
-      <button className="absolute right-[12px] top-[14px] p-1 opacity-50 hover:opacity-90 transition-opacity">
+      <button 
+        onClick={(e) => {
+          e.stopPropagation()
+          const rect = cardRef.current.getBoundingClientRect()
+          openDropdown({ 
+            id, 
+            name: fileName, 
+            size: fileSize, 
+            time: timestamp, 
+            type: fileType 
+          }, rect)
+        }}
+        className="absolute right-[12px] top-[14px] p-1 opacity-50 hover:opacity-90 transition-opacity z-[101]"
+      >
         <svg width="14" height="30" viewBox="0 0 14 30" fill="none">
           <circle cx="7" cy="5" r="2.5" stroke="#A3B2C7" strokeWidth="1.5" />
           <circle cx="7" cy="15" r="2.5" stroke="#A3B2C7" strokeWidth="1.5" />

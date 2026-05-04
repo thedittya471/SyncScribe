@@ -136,3 +136,10 @@ export const otherFiles = [
   { id: 11, fileName: 'school.ddr', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
   { id: 12, fileName: 'Water.ddr', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'other' },
 ]
+
+export const trashFiles = [
+  { id: 1, fileName: 'Old Draft.docx', fileSize: '1.2 MB', timestamp: '09:15am, 12 Nov', fileType: 'doc' },
+  { id: 2, fileName: 'Duplicate Logo.png', fileSize: '500 KB', timestamp: '11:43am, 10 Nov', fileType: 'image' },
+  { id: 3, fileName: 'Temporary Video.mp4', fileSize: '45 MB', timestamp: '02:30pm, 08 Nov', fileType: 'video' },
+  { id: 4, fileName: 'Notes_v1.txt', fileSize: '10 KB', timestamp: '10:00am, 05 Nov', fileType: 'other' },
+]

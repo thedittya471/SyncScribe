@@ -91,6 +91,7 @@ const ImagePage = () => {
                             style={{ animationDelay: `${150 + index * 50}ms` }}
                         >
                             <ImageBox
+                                id={img.id}
                                 fileName={img.fileName}
                                 fileSize={img.fileSize}
                                 timestamp={img.timestamp}

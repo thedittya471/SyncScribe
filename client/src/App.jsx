@@ -5,27 +5,32 @@ import DocumentPage from './pages/Document'
 import ImagePage from './pages/Image'
 import MediaPage from './pages/Media'
 import OthersPage from './pages/Others'
+import TrashPage from './pages/Trash'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Layout from './components/Layout'
+import { FileActionProvider } from './context/FileActionContext'
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        
-        <Route element={<Layout />}>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/document" element={<DocumentPage />} />
-          <Route path="/image" element={<ImagePage />} />
-          <Route path="/media" element={<MediaPage />} />
-          <Route path="/others" element={<OthersPage />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <FileActionProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          
+          <Route element={<Layout />}>
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/document" element={<DocumentPage />} />
+            <Route path="/image" element={<ImagePage />} />
+            <Route path="/media" element={<MediaPage />} />
+            <Route path="/others" element={<OthersPage />} />
+            <Route path="/trash" element={<TrashPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </FileActionProvider>
   )
 }
 

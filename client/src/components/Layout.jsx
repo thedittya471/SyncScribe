@@ -6,15 +6,19 @@ import FileUploadPopup from './FileUploadPopup';
 
 const Layout = () => {
   return (
-    <div className="flex h-screen w-full bg-[#F2F4F8] font-sans overflow-hidden">
+    <div className="flex h-screen w-full bg-[#F2F4F8] font-sans overflow-hidden relative">
+      {/* Background Decorative Gradient */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#FA7275]/5 rounded-full blur-[120px] -mr-40 -mt-40 pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#56B8FF]/5 rounded-full blur-[120px] -ml-40 -mb-40 pointer-events-none" />
+      
       <Sidebar />
-      <main className="flex-1 flex flex-col relative overflow-hidden">
+      <main className="flex-1 flex flex-col relative overflow-hidden z-10">
         <Topbar />
-        <div className="flex-1 overflow-y-auto px-4 md:px-8 pb-8">
+        <div className="flex-1 overflow-y-auto px-4 md:px-8 pb-8 custom-scrollbar">
           <Outlet />
         </div>
       </main>
-      <FileUploadPopup />
+      {/* <FileUploadPopup /> */}
     </div>
   );
 };

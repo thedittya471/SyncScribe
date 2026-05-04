@@ -77,6 +77,7 @@ const Document = () => {
                             style={{ animationDelay: `${150 + index * 50}ms` }}
                         >
                             <DocumentBox
+                                id={doc.id}
                                 fileName={doc.fileName}
                                 fileSize={doc.fileSize}
                                 timestamp={doc.timestamp}

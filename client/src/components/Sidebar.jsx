@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, FileText, Image as ImageIcon, Video, PieChart } from 'lucide-react';
+import { LayoutDashboard, FileText, Image as ImageIcon, Video, PieChart, Trash2 } from 'lucide-react';
 import heroImage from '../assets/hero.png';
 
 const navItems = [
@@ -9,6 +9,7 @@ const navItems = [
   { name: 'Images', path: '/image', icon: ImageIcon },
   { name: 'Media', path: '/media', icon: Video },
   { name: 'Others', path: '/others', icon: PieChart },
+  { name: 'Trash', path: '/trash', icon: Trash2 },
 ];
 
 const Sidebar = () => {

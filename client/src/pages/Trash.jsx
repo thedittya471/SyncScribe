@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import MediaBox from '../components/MediaBox'
-import { mediaFiles } from '../data'
+import TrashBox from '../components/TrashBox'
+import { trashFiles } from '../data'
+import { Trash2 } from 'lucide-react'
 
 const sortOptions = [
     'Date Created (newest)',
@@ -11,7 +12,7 @@ const sortOptions = [
     'Size (smallest)',
 ]
 
-const Media = () => {
+const Trash = () => {
     const [sortBy, setSortBy] = useState(sortOptions[0])
 
     useEffect(() => {
@@ -36,12 +37,20 @@ const Media = () => {
             <div className="max-w-[1100px] mx-auto">
                 <div className="mb-8">
                     <h1 className="text-[#333F4E] text-4xl font-extrabold mb-1 anim-fade-up">
-                        Media
+                        Trash
                     </h1>
                     <div className="flex items-center justify-between">
-                        <p className="text-[#333F4E]/60 text-sm anim-fade-up" style={{ animationDelay: '60ms' }}>
-                            Total: <span className="font-semibold">12 GB</span>
-                        </p>
+                        <div className="flex items-center gap-4 anim-fade-up" style={{ animationDelay: '60ms' }}>
+                            <p className="text-[#333F4E]/60 text-sm">
+                                Total: <span className="font-semibold">{trashFiles.length} items</span>
+                            </p>
+                            {trashFiles.length > 0 && (
+                                <button className="flex items-center gap-2 bg-[#FA7275] hover:bg-[#F95F63] text-white px-5 py-2 rounded-full text-xs font-bold shadow-[0_4px_15px_rgba(250,114,117,0.25)] hover:shadow-[0_4px_20px_rgba(250,114,117,0.35)] hover:-translate-y-0.5 transition-all duration-300">
+                                    <Trash2 className="w-4 h-4" strokeWidth={2.5} />
+                                    <span>Empty Trash</span>
+                                </button>
+                            )}
+                        </div>
 
                         <div className="flex items-center gap-2 anim-fade-up" style={{ animationDelay: '120ms' }}>
                             <span className="text-[#A3B2C7] text-sm">Sort by:</span>
@@ -63,26 +72,35 @@ const Media = () => {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-1.5 gap-y-3 justify-items-center">
-                    {mediaFiles.map((file, index) => (
-                        <div
-                            key={file.id}
-                            className="anim-fade-up"
-                            style={{ animationDelay: `${150 + index * 50}ms` }}
-                        >
-                            <MediaBox
-                                id={file.id}
-                                fileName={file.fileName}
-                                fileSize={file.fileSize}
-                                timestamp={file.timestamp}
-                                fileType={file.fileType}
-                            />
+                {trashFiles.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-1.5 gap-y-3 justify-items-center">
+                        {trashFiles.map((file, index) => (
+                            <div
+                                key={file.id}
+                                className="anim-fade-up"
+                                style={{ animationDelay: `${150 + index * 50}ms` }}
+                            >
+                                <TrashBox
+                                    fileName={file.fileName}
+                                    fileSize={file.fileSize}
+                                    timestamp={file.timestamp}
+                                    fileType={file.fileType}
+                                />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <div className="flex flex-col items-center justify-center py-32 anim-fade-up">
+                        <div className="w-24 h-24 bg-[#F2F4F8] rounded-full flex items-center justify-center mb-6">
+                            <Trash2 size={40} className="text-[#A3B2C7]" strokeWidth={1.5} />
                         </div>
-                    ))}
-                </div>
+                        <p className="text-[#333F4E] text-xl font-bold mb-2">Trash is empty</p>
+                        <p className="text-[#A3B2C7] text-sm">Items moved to trash will appear here</p>
+                    </div>
+                )}
             </div>
         </div>
     )
 }
 
-export default Media
+export default Trash
