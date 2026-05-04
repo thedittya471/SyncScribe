@@ -2,6 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Topbar from './Topbar';
+import FileUploadPopup from './FileUploadPopup';
 
 const Layout = () => {
   return (
@@ -13,6 +14,7 @@ const Layout = () => {
           <Outlet />
         </div>
       </main>
+      <FileUploadPopup />
     </div>
   );
 };
