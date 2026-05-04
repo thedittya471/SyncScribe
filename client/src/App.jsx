@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import DocumentPage from './pages/Document'
 import ImagePage from './pages/Image'
+import MediaPage from './pages/Media'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Layout from './components/Layout'
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/document" element={<DocumentPage />} />
           <Route path="/image" element={<ImagePage />} />
+          <Route path="/media" element={<MediaPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

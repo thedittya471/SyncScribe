@@ -13,11 +13,11 @@ const navItems = [
 
 const Sidebar = () => {
   return (
-    <aside className="w-[300px] h-screen bg-white shadow-[0_0_40px_rgba(0,0,0,0.03)] flex flex-col pt-12 pb-8 px-6 sticky top-0 shrink-0 overflow-y-auto hidden md:flex z-50">
+    <aside className="w-[300px] h-screen bg-white shadow-[0_0_40px_rgba(0,0,0,0.03)] flex flex-col pt-12 pb-8 px-6 sticky top-0 shrink-0 overflow-y-auto md:flex z-50">
       
       {/* Logo */}
       <div className="flex items-center gap-2 mb-12 ml-4">
-        <div className="relative flex items-center w-[3rem] h-10">
+        <div className="relative flex items-center w-12 h-10">
           <div className="absolute left-0 w-10 h-10 bg-[#FA7275]/20 rounded-full"></div>
           <div className="absolute left-4 w-10 h-10 bg-[#FA7275] rounded-full"></div>
         </div>
@@ -31,7 +31,7 @@ const Sidebar = () => {
             key={item.name}
             to={item.path}
             className={({ isActive }) => `
-              flex items-center gap-4 px-6 py-4 rounded-[1.5rem] font-semibold text-[1.05rem] transition-all duration-300
+              flex items-center gap-4 px-6 py-4 rounded-3xl font-semibold text-[1.05rem] transition-all duration-300
               ${isActive 
                 ? 'bg-[#FA7275] text-white shadow-[0_8px_20px_rgba(250,114,117,0.3)]' 
                 : 'text-[#536173] hover:bg-gray-50'

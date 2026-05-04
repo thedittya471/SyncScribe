@@ -86,8 +86,38 @@ export const recentFiles = [
   },
 ]
 
+export const documents = [
+    { id: 1, fileName: 'App School.doc', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'doc' },
+    { id: 2, fileName: 'BC company.sketch', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'sketch' },
+    { id: 3, fileName: 'B.UI.xd', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'xd' },
+    { id: 4, fileName: 'CompanyANV.fig', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'fig' },
+    { id: 5, fileName: 'company ABC.sketch', fileSize: '6 MB', timestamp: '10:09pm, 10 Oct', fileType: 'sketch' },
+    { id: 6, fileName: 'My CV.pdf', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'pdf' },
+    { id: 7, fileName: 'My Jobs.csv', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'csv' },
+    { id: 8, fileName: 'notes.txt', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'txt' },
+    { id: 9, fileName: 'P.N design123.fig', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'fig' },
+    { id: 10, fileName: 'students.docx', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'docx' },
+    { id: 11, fileName: 'school.pdf', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'pdf' },
+    { id: 12, fileName: 'Water design999.fig', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'fig' },
+]
+
 export const storageInfo = {
   usedGB: 82,
   totalGB: 128,
   percentage: 65,
 }
+
+export const mediaFiles = [
+  { id: 1, fileName: 'App School.vid', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'video' },
+  { id: 2, fileName: 'BC company.audi', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'audio' },
+  { id: 3, fileName: 'Because i love you.mp3', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'music' },
+  { id: 4, fileName: 'CompanyANV.audi', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'audio' },
+  { id: 5, fileName: 'company ABC.audi', fileSize: '6 MB', timestamp: '10:09pm, 10 Oct', fileType: 'audio' },
+  { id: 6, fileName: 'My CV.vid', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'video' },
+  { id: 7, fileName: 'My Jobs.fig', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'music' },
+  { id: 8, fileName: 'Photoshop.audi', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'audio' },
+  { id: 9, fileName: 'Pig Pig Pig.mp4', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'video' },
+  { id: 10, fileName: 'system.audi', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'audio' },
+  { id: 11, fileName: 'school.vid', fileSize: '15 MB', timestamp: '10:09pm, 10 Oct', fileType: 'video' },
+  { id: 12, fileName: 'Water.mp4', fileSize: '2 GB', timestamp: '10:09pm, 10 Oct', fileType: 'video' },
+]
