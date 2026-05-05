@@ -156,10 +156,10 @@ const refreshAccessToken = async (req, res) => {
         const { accessToken, newRefreshToken } =
             await generateAccessTokenAndRefreshToken(user._id);
 
-        const options = {
-            httpOnly: true,
-            secure: true,
-        };
+    const options = {
+        httpOnly: true,
+        secure: true,
+    };
 
         return res
             .status(200)

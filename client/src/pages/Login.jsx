@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthLeftPanel from '../components/AuthLeftPanel';
+import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     identifier: '',
     password: ''
@@ -12,10 +17,22 @@ const Login = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login submitted:', formData);
-    // TODO: Add login logic
+    setError('');
+    setLoading(true);
+    try {
+      await login({
+        email: formData.identifier,
+        username: formData.identifier,
+        password: formData.password
+      });
+      navigate('/dashboard');
+    } catch (err) {
+      setError(err.message || 'Invalid credentials');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -58,11 +75,20 @@ const Login = () => {
                 />
               </div>
 
+              {error && (
+                <div className="bg-rose-50 text-rose-500 p-4 rounded-xl text-sm font-bold border border-rose-100">
+                  {error}
+                </div>
+              )}
+
               <button 
                 type="submit" 
-                className="w-full bg-[#FA7275] hover:bg-[#F95F63] text-white text-lg font-bold py-5 rounded-full transition-all duration-300 shadow-[0_8px_20px_rgba(250,114,117,0.25)] hover:shadow-[0_8px_25px_rgba(250,114,117,0.4)] hover:-translate-y-1 mt-8"
+                disabled={loading}
+                className="w-full bg-[#FA7275] hover:bg-[#F95F63] text-white text-lg font-bold py-5 rounded-full transition-all duration-300 shadow-[0_8px_20px_rgba(250,114,117,0.25)] hover:shadow-[0_8px_25px_rgba(250,114,117,0.4)] hover:-translate-y-1 mt-8 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                Login
+                {loading ? (
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                ) : 'Login'}
               </button>
             </form>
 

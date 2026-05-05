@@ -4,6 +4,7 @@ import RenameModal from '../components/RenameModal'
 import TrashModal from '../components/TrashModal'
 import DetailsModal from '../components/DetailsModal'
 import ShareModal from '../components/ShareModal'
+import { useFiles } from './FileContext'
 
 const FileActionContext = createContext()
 
@@ -67,15 +68,34 @@ export const FileActionProvider = ({ children }) => {
     setModalFileData(null)
   }, [])
 
-  const handleRenameSave = (newName) => {
-    console.log(`Renaming file ${modalFileData.id} to ${newName}`)
-    closeRenameModal()
+  const { renameFile, moveToTrash, downloadFile } = useFiles();
+
+  const handleRenameSave = async (newName) => {
+    try {
+      await renameFile(modalFileData.id, newName);
+      closeRenameModal();
+    } catch (error) {
+      alert(error.message || 'Rename failed');
+    }
   }
 
-  const handleMoveToTrash = () => {
-    console.log(`Moving file ${modalFileData.id} to trash`)
-    closeTrashModal()
+  const handleMoveToTrash = async () => {
+    try {
+      await moveToTrash(modalFileData.id);
+      closeTrashModal();
+    } catch (error) {
+      alert(error.message || 'Move to trash failed');
+    }
   }
+
+  const handleDownload = async (fileId) => {
+    try {
+      await downloadFile(fileId);
+      closeDropdown();
+    } catch (error) {
+      alert(error.message || 'Download failed');
+    }
+  };
 
   return (
     <FileActionContext.Provider value={{ 
@@ -89,7 +109,11 @@ export const FileActionProvider = ({ children }) => {
       openDetailsModal,
       closeDetailsModal,
       openShareModal,
-      closeShareModal
+      closeShareModal,
+      isRenameModalOpen,
+      isTrashModalOpen,
+      isDetailsModalOpen,
+      isShareModalOpen
     }}>
       {children}
       {activeFile && (
@@ -104,6 +128,7 @@ export const FileActionProvider = ({ children }) => {
             onMoveToTrash={() => openTrashModal(activeFile)}
             onShowDetails={() => openDetailsModal(activeFile)}
             onShare={() => openShareModal(activeFile)}
+            onDownload={() => handleDownload(activeFile.id)}
           />
         </>
       )}

@@ -16,6 +16,7 @@ const ImageBox = ({
   return (
     <div 
       ref={cardRef}
+      onClick={() => imageUrl && window.open(imageUrl, '_blank')}
       className={`relative w-[195px] h-[170px] bg-white rounded-[16px] font-['Poppins',sans-serif] group cursor-pointer transition-all duration-300 ease-out 
       ${isDropdownOpen ? 'z-[110] shadow-2xl scale-[1.02]' : 'z-10 shadow-md hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1'}`}>
       

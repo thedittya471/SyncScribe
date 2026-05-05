@@ -1,33 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import DocumentBox from '../components/DocumentBox'
-import { documents } from '../data'
+import { useFiles } from '../context/FileContext'
+import { formatBytes } from '../utils/format'
 
-const sortOptions = [
-    'Date Created (newest)',
-    'Date Created (oldest)',
-    'Name (A-Z)',
-    'Name (Z-A)',
-    'Size (largest)',
-    'Size (smallest)',
-]
+import { useFileSort } from '../hooks/useFileSort'
 
 const Document = () => {
-    const [sortBy, setSortBy] = useState(sortOptions[0])
+    const { files, getFiles, loading } = useFiles();
+    const { sortedFiles, sortBy, setSortBy, sortOptions } = useFileSort(files);
 
-    // Load Poppins font
     useEffect(() => {
-        if (!document.querySelector('link[href*="Poppins"]')) {
-            const link = document.createElement('link')
-            link.href =
-                'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap'
-            link.rel = 'stylesheet'
-            document.head.appendChild(link)
-        }
-    }, [])
+        getFiles('Documents');
+    }, [getFiles]);
+
+    const totalSize = useMemo(() => {
+        const total = files.reduce((acc, file) => acc + (file.size || 0), 0);
+        return formatBytes(total);
+    }, [files]);
 
     return (
         <div className="w-full font-['Poppins',sans-serif]">
-            {/* Animations */}
             <style>{`
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(16px); }
@@ -37,17 +29,15 @@ const Document = () => {
       `}</style>
 
             <div className="max-w-[1100px] mx-auto">
-                {/* ── Header row ── */}
                 <div className="mb-8">
                     <h1 className="text-[#333F4E] text-4xl font-extrabold mb-1 anim-fade-up">
                         Documents
                     </h1>
                     <div className="flex items-center justify-between">
                         <p className="text-[#333F4E]/60 text-sm anim-fade-up" style={{ animationDelay: '60ms' }}>
-                            Total: <span className="font-semibold">12h5GB</span>
+                            Total: <span className="font-semibold">{totalSize}</span>
                         </p>
 
-                        {/* Sort dropdown */}
                         <div className="flex items-center gap-2 anim-fade-up" style={{ animationDelay: '120ms' }}>
                             <span className="text-[#A3B2C7] text-sm">Sort by:</span>
                             <select
@@ -68,24 +58,36 @@ const Document = () => {
                     </div>
                 </div>
 
-                {/* ── Document grid ── */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-1.5 gap-y-3 justify-items-center">
-                    {documents.map((doc, index) => (
-                        <div
-                            key={doc.id}
-                            className="anim-fade-up"
-                            style={{ animationDelay: `${150 + index * 50}ms` }}
-                        >
-                            <DocumentBox
-                                id={doc.id}
-                                fileName={doc.fileName}
-                                fileSize={doc.fileSize}
-                                timestamp={doc.timestamp}
-                                fileType={doc.fileType}
-                            />
-                        </div>
-                    ))}
-                </div>
+                {loading && files.length === 0 ? (
+                    <div className="flex justify-center py-20">
+                        <div className="w-10 h-10 border-4 border-[#FA7275]/20 border-t-[#FA7275] rounded-full animate-spin"></div>
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-1.5 gap-y-3 justify-items-center">
+                        {sortedFiles.length > 0 ? (
+                            sortedFiles.map((doc, index) => (
+                                <div
+                                    key={doc._id}
+                                    className="anim-fade-up"
+                                    style={{ animationDelay: `${150 + index * 50}ms` }}
+                                >
+                                    <DocumentBox
+                                        id={doc._id}
+                                        fileName={doc.name}
+                                        fileSize={formatBytes(doc.size)}
+                                        timestamp={new Date(doc.createdAt).toLocaleDateString()}
+                                        fileType={doc.type}
+                                        fileUrl={doc.url}
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <div className="col-span-full text-center py-20 text-gray-400 font-medium">
+                                No documents found
+                            </div>
+                        )}
+                    </div>
+                )}
             </div>
         </div>
     )

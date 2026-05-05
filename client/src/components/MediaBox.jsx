@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { Play, Mic, Music, FileQuestion } from 'lucide-react'
 import { useFileActions } from '../context/FileActionContext'
 
-const MediaBox = ({ id, fileName, fileSize, timestamp, fileType }) => {
+const MediaBox = ({ id, fileName, fileSize, timestamp, fileType, fileUrl }) => {
   const { activeFile, openDropdown } = useFileActions()
   const cardRef = useRef(null)
   
@@ -28,6 +28,7 @@ const MediaBox = ({ id, fileName, fileSize, timestamp, fileType }) => {
   return (
     <div 
       ref={cardRef}
+      onClick={() => fileUrl && window.open(fileUrl, '_blank')}
       className={`relative w-[195px] h-[170px] bg-white rounded-[16px] font-['Poppins',sans-serif] group cursor-pointer transition-all duration-300 ease-out 
       ${isDropdownOpen ? 'z-[110] shadow-2xl scale-[1.02]' : 'z-10 shadow-md hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1'}`}>
       

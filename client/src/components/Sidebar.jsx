@@ -1,6 +1,8 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, FileText, Image as ImageIcon, Video, PieChart, Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { LayoutDashboard, FileText, Image as ImageIcon, Video, PieChart, Trash2, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import LogoutModal from './LogoutModal';
 import heroImage from '../assets/hero.png';
 
 const navItems = [
@@ -13,8 +15,17 @@ const navItems = [
 ];
 
 const Sidebar = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate('/');
+  };
+
   return (
-    <aside className="w-[300px] h-screen bg-white shadow-[0_0_40px_rgba(0,0,0,0.03)] flex flex-col pt-12 pb-8 px-6 sticky top-0 shrink-0 overflow-y-auto md:flex z-50">
+    <aside className="w-[300px] h-screen bg-white shadow-[0_0_40px_rgba(0,0,0,0.03)] flex flex-col pt-12 pb-8 px-6 sticky top-0 shrink-0 md:flex z-50">
       
       {/* Logo */}
       <div className="flex items-center gap-2 mb-12 ml-4">
@@ -62,16 +73,30 @@ const Sidebar = () => {
       </div>
 
       {/* Profile */}
-      <div className="flex items-center gap-4 px-4 py-2 mt-auto">
+      <div className="flex items-center gap-3 px-4 py-3 mt-auto border-t border-gray-50 pt-8">
         <img 
-          src="https://api.dicebear.com/7.x/notionists/svg?seed=Adrian&backgroundColor=e2e8f0" 
+          src={`https://api.dicebear.com/7.x/notionists/svg?seed=${user?.username || 'User'}&backgroundColor=e2e8f0`} 
           alt="Profile" 
-          className="w-12 h-12 rounded-full object-cover bg-gray-200"
+          className="w-12 h-12 rounded-full object-cover bg-gray-200 shrink-0"
         />
-        <div>
-          <p className="font-bold text-[#2C3647]">Adrian JSM</p>
+        <div className="overflow-hidden flex-1">
+          <p className="font-bold text-[#2C3647] truncate text-sm">{user?.fullName || 'User'}</p>
+          <p className="text-[11px] text-[#A3B2C7] font-semibold truncate uppercase tracking-wider">{user?.email}</p>
         </div>
+        <button
+          onClick={() => setIsLogoutModalOpen(true)}
+          className="p-2.5 text-[#A3B2C7] hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-all duration-200 shrink-0"
+          title="Logout"
+        >
+          <LogOut className="w-5 h-5" strokeWidth={2.5} />
+        </button>
       </div>
+
+      <LogoutModal 
+        isOpen={isLogoutModalOpen}
+        onClose={() => setIsLogoutModalOpen(false)}
+        onConfirm={handleLogout}
+      />
 
     </aside>
   );

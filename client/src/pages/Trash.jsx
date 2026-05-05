@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import TrashBox from '../components/TrashBox'
-import { trashFiles } from '../data'
+import { useFiles } from '../context/FileContext'
+import { formatBytes } from '../utils/format'
 import { Trash2 } from 'lucide-react'
 
-const sortOptions = [
-    'Date Created (newest)',
-    'Date Created (oldest)',
-    'Name (A-Z)',
-    'Name (Z-A)',
-    'Size (largest)',
-    'Size (smallest)',
-]
+import { useFileSort } from '../hooks/useFileSort'
 
 const Trash = () => {
-    const [sortBy, setSortBy] = useState(sortOptions[0])
+    const { files, getFiles, loading, restoreFromTrash, deletePermanently } = useFiles();
+    const { sortedFiles, sortBy, setSortBy, sortOptions } = useFileSort(files);
 
     useEffect(() => {
-        if (!document.querySelector('link[href*="Poppins"]')) {
-            const link = document.createElement('link')
-            link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap'
-            link.rel = 'stylesheet'
-            document.head.appendChild(link)
-        }
-    }, [])
+        getFiles('trash');
+    }, [getFiles]);
+
+    const handleRestore = async (id) => {
+        await restoreFromTrash(id);
+        getFiles('trash');
+    };
+
+    const handleDelete = async (id) => {
+        await deletePermanently(id);
+    };
 
     return (
         <div className="w-full font-['Poppins',sans-serif]">
@@ -42,14 +41,8 @@ const Trash = () => {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4 anim-fade-up" style={{ animationDelay: '60ms' }}>
                             <p className="text-[#333F4E]/60 text-sm">
-                                Total: <span className="font-semibold">{trashFiles.length} items</span>
+                                Total: <span className="font-semibold">{files.length} items</span>
                             </p>
-                            {trashFiles.length > 0 && (
-                                <button className="flex items-center gap-2 bg-[#FA7275] hover:bg-[#F95F63] text-white px-5 py-2 rounded-full text-xs font-bold shadow-[0_4px_15px_rgba(250,114,117,0.25)] hover:shadow-[0_4px_20px_rgba(250,114,117,0.35)] hover:-translate-y-0.5 transition-all duration-300">
-                                    <Trash2 className="w-4 h-4" strokeWidth={2.5} />
-                                    <span>Empty Trash</span>
-                                </button>
-                            )}
                         </div>
 
                         <div className="flex items-center gap-2 anim-fade-up" style={{ animationDelay: '120ms' }}>
@@ -72,19 +65,26 @@ const Trash = () => {
                     </div>
                 </div>
 
-                {trashFiles.length > 0 ? (
+                {loading && files.length === 0 ? (
+                    <div className="flex justify-center py-20">
+                        <div className="w-10 h-10 border-4 border-[#FA7275]/20 border-t-[#FA7275] rounded-full animate-spin"></div>
+                    </div>
+                ) : files.length > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-1.5 gap-y-3 justify-items-center">
-                        {trashFiles.map((file, index) => (
+                        {sortedFiles.map((file, index) => (
                             <div
-                                key={file.id}
+                                key={file._id}
                                 className="anim-fade-up"
                                 style={{ animationDelay: `${150 + index * 50}ms` }}
                             >
                                 <TrashBox
-                                    fileName={file.fileName}
-                                    fileSize={file.fileSize}
-                                    timestamp={file.timestamp}
-                                    fileType={file.fileType}
+                                    id={file._id}
+                                    fileName={file.name}
+                                    fileSize={formatBytes(file.size)}
+                                    timestamp={new Date(file.createdAt).toLocaleDateString()}
+                                    fileType={file.type}
+                                    onRestore={() => handleRestore(file._id)}
+                                    onDelete={() => handleDelete(file._id)}
                                 />
                             </div>
                         ))}

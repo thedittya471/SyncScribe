@@ -9,28 +9,56 @@ import TrashPage from './pages/Trash'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Layout from './components/Layout'
+import Landing from './pages/Landing'
+import ProtectedRoute from './components/ProtectedRoute'
+import PublicRoute from './components/PublicRoute'
 import { FileActionProvider } from './context/FileActionContext'
+import { AuthProvider } from './context/AuthContext'
+import { FileProvider } from './context/FileContext'
 
 const App = () => {
   return (
-    <FileActionProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          
-          <Route element={<Layout />}>
-            <Route path="/" element={<Navigate to="/dashboard" replace />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/document" element={<DocumentPage />} />
-            <Route path="/image" element={<ImagePage />} />
-            <Route path="/media" element={<MediaPage />} />
-            <Route path="/others" element={<OthersPage />} />
-            <Route path="/trash" element={<TrashPage />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </FileActionProvider>
+    <AuthProvider>
+      <FileProvider>
+        <FileActionProvider>
+          <BrowserRouter>
+            <Routes>
+              {/* Public Landing Page */}
+              <Route path="/" element={<Landing />} />
+              
+              {/* Auth Routes - Protected from logged in users */}
+              <Route path="/login" element={
+                <PublicRoute>
+                  <Login />
+                </PublicRoute>
+              } />
+              <Route path="/signup" element={
+                <PublicRoute>
+                  <Signup />
+                </PublicRoute>
+              } />
+              
+              {/* Protected Application Routes */}
+              <Route element={
+                <ProtectedRoute>
+                  <Layout />
+                </ProtectedRoute>
+              }>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/document" element={<DocumentPage />} />
+                <Route path="/image" element={<ImagePage />} />
+                <Route path="/media" element={<MediaPage />} />
+                <Route path="/others" element={<OthersPage />} />
+                <Route path="/trash" element={<TrashPage />} />
+              </Route>
+              
+              {/* Catch-all redirect to Landing */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </BrowserRouter>
+        </FileActionProvider>
+      </FileProvider>
+    </AuthProvider>
   )
 }
 

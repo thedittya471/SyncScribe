@@ -23,7 +23,7 @@ const uploadFile = async (req, res) => {
 
   const usedBytes = totalUsed.length > 0 ? totalUsed[0].total : 0;
   if (usedBytes + req.file.size > USER_STORAGE_LIMIT) {
-    fs.unlinkSync(localFilePath); 
+    fs.unlinkSync(localFilePath);
     throw new apiError(
       400,
       `Storage limit exceeded. You have used ${(usedBytes / (1024 * 1024)).toFixed(2)} MB of 500 MB.`,

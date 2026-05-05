@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AuthLeftPanel from '../components/AuthLeftPanel';
+import { useAuth } from '../context/AuthContext';
 
 const Signup = () => {
+  const { register } = useAuth();
+  const navigate = useNavigate();
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: '',
     username: '',
@@ -14,10 +19,18 @@ const Signup = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Signup submitted:', formData);
-    // TODO: Add signup logic
+    setError('');
+    setLoading(true);
+    try {
+      await register(formData);
+      navigate('/login');
+    } catch (err) {
+      setError(err.message || 'Registration failed');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -88,11 +101,20 @@ const Signup = () => {
                 />
               </div>
 
+              {error && (
+                <div className="bg-rose-50 text-rose-500 p-4 rounded-xl text-sm font-bold border border-rose-100">
+                  {error}
+                </div>
+              )}
+
               <button 
                 type="submit" 
-                className="w-full bg-[#FA7275] hover:bg-[#F95F63] text-white text-lg font-bold py-4 xl:py-5 rounded-full transition-all duration-300 shadow-[0_8px_20px_rgba(250,114,117,0.25)] hover:shadow-[0_8px_25px_rgba(250,114,117,0.4)] hover:-translate-y-1 mt-6"
+                disabled={loading}
+                className="w-full bg-[#FA7275] hover:bg-[#F95F63] text-white text-lg font-bold py-4 xl:py-5 rounded-full transition-all duration-300 shadow-[0_8px_20px_rgba(250,114,117,0.25)] hover:shadow-[0_8px_25px_rgba(250,114,117,0.4)] hover:-translate-y-1 mt-6 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center"
               >
-                Sign Up
+                {loading ? (
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                ) : 'Sign Up'}
               </button>
             </form>
 
