@@ -160,10 +160,13 @@ export const FileActionProvider = ({ children }) => {
       {isShareModalOpen && (
         <ShareModal 
           fileData={{
+            id: modalFileData.id,
             fileName: modalFileData.name,
             fileSize: modalFileData.size,
             timestamp: modalFileData.time,
-            fileType: modalFileData.type
+            fileType: modalFileData.type,
+            permissions: modalFileData.permissions,
+            fileUrl: modalFileData.url
           }}
           onClose={closeShareModal}
         />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FileText, Image as ImageIcon, Video, PieChart, Trash2, LogOut } from 'lucide-react';
+import { LayoutDashboard, FileText, Image as ImageIcon, Video, PieChart, LogOut, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import LogoutModal from './LogoutModal';
 import heroImage from '../assets/hero.png';
@@ -11,7 +11,7 @@ const navItems = [
   { name: 'Images', path: '/image', icon: ImageIcon },
   { name: 'Media', path: '/media', icon: Video },
   { name: 'Others', path: '/others', icon: PieChart },
-  { name: 'Trash', path: '/trash', icon: Trash2 },
+  { name: 'Shared', path: '/shared', icon: Users },
 ];
 
 const Sidebar = () => {

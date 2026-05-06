@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import ImageBox from '../components/ImageBox'
+import FileCard from '../components/FileCard'
 import { useFiles } from '../context/FileContext'
 import { formatBytes } from '../utils/format'
 
@@ -71,12 +71,14 @@ const ImagePage = () => {
                                     className="anim-fade-up"
                                     style={{ animationDelay: `${150 + index * 50}ms` }}
                                 >
-                                    <ImageBox
+                                    <FileCard
                                         id={img._id}
                                         fileName={img.name}
                                         fileSize={formatBytes(img.size)}
                                         timestamp={new Date(img.createdAt).toLocaleDateString()}
-                                        imageUrl={img.url}
+                                        fileType="image"
+                                        fileUrl={img.url}
+                                        permissions={img.permissions}
                                     />
                                 </div>
                             ))

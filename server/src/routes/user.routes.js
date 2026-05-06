@@ -5,6 +5,7 @@ import {
   logOutUser,
   refreshAccessToken,
   getCurrentUser,
+  searchUsers,
 } from '../controllers/user.controller.js';
 import { jwtVerify } from '../middlewares/auth.middleware.js';
 
@@ -17,5 +18,6 @@ router.route('/login').post(loginUser);
 router.route('/logout').post(jwtVerify, logOutUser);
 router.route('/refresh-access-token').post(refreshAccessToken);
 router.route('/current-user').get(jwtVerify, getCurrentUser);
+router.route('/search').get(jwtVerify, searchUsers);
 
 export default router;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import MediaBox from '../components/MediaBox'
+import FileCard from '../components/FileCard'
 import { useFiles } from '../context/FileContext'
 import { formatBytes } from '../utils/format'
 
@@ -71,13 +71,14 @@ const Media = () => {
                                     className="anim-fade-up"
                                     style={{ animationDelay: `${150 + index * 50}ms` }}
                                 >
-                                    <MediaBox
+                                    <FileCard
                                         id={file._id}
                                         fileName={file.name}
                                         fileSize={formatBytes(file.size)}
                                         timestamp={new Date(file.createdAt).toLocaleDateString()}
                                         fileType={file.type.startsWith('video') ? 'video' : 'audio'}
                                         fileUrl={file.url}
+                                        permissions={file.permissions}
                                     />
                                 </div>
                             ))

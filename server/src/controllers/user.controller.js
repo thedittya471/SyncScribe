@@ -190,5 +190,18 @@ const getCurrentUser = async (req, res) => {
 
 
 
-export { registerUser, loginUser, logOutUser, refreshAccessToken, getCurrentUser };
+const searchUsers = async (req, res) => {
+  const { query } = req.query;
+  if (!query) {
+    return res.status(200).json(new apiResponse(200, [], "Query is required"));
+  }
+
+  const users = await User.find({
+    email: { $regex: query, $options: 'i' }
+  }).select('email username fullName').limit(5);
+
+  return res.status(200).json(new apiResponse(200, users, "Users fetched successfully"));
+};
+
+export { registerUser, loginUser, logOutUser, refreshAccessToken, getCurrentUser, searchUsers };
 

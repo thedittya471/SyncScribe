@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import TrashBox from '../components/TrashBox'
+import FileCard from '../components/FileCard'
 import { useFiles } from '../context/FileContext'
 import { formatBytes } from '../utils/format'
 import { Trash2 } from 'lucide-react'
@@ -77,12 +77,13 @@ const Trash = () => {
                                 className="anim-fade-up"
                                 style={{ animationDelay: `${150 + index * 50}ms` }}
                             >
-                                <TrashBox
+                                <FileCard
                                     id={file._id}
                                     fileName={file.name}
                                     fileSize={formatBytes(file.size)}
                                     timestamp={new Date(file.createdAt).toLocaleDateString()}
                                     fileType={file.type}
+                                    isTrashed={true}
                                     onRestore={() => handleRestore(file._id)}
                                     onDelete={() => handleDelete(file._id)}
                                 />

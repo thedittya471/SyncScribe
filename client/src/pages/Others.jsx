@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react'
-import DocumentBox from '../components/DocumentBox'
+import FileCard from '../components/FileCard'
 import { useFiles } from '../context/FileContext'
 import { formatBytes } from '../utils/format'
 
@@ -71,13 +71,14 @@ const Others = () => {
                                     className="anim-fade-up"
                                     style={{ animationDelay: `${150 + index * 50}ms` }}
                                 >
-                                    <DocumentBox
+                                    <FileCard
                                         id={file._id}
                                         fileName={file.name}
                                         fileSize={formatBytes(file.size)}
                                         timestamp={new Date(file.createdAt).toLocaleDateString()}
                                         fileType={file.type}
                                         fileUrl={file.url}
+                                        permissions={file.permissions}
                                     />
                                 </div>
                             ))

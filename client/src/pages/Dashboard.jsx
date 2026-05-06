@@ -230,7 +230,8 @@ const Dashboard = () => {
                           name: file.name,
                           size: formatBytes(file.size),
                           time: formatTimeAgo(file.createdAt),
-                          type: file.type
+                          type: file.type,
+                          permissions: file.permissions
                         }, rect);
                       }}
                     >

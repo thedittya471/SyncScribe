@@ -46,12 +46,22 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const searchUsers = async (query) => {
+    try {
+      const response = await api.get(`/users/search?query=${query}`);
+      return response.data.data;
+    } catch (error) {
+      console.error('Search users failed:', error);
+      return [];
+    }
+  };
+
   useEffect(() => {
     checkAuth();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, loading, register, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, register, login, logout, searchUsers }}>
       {children}
     </AuthContext.Provider>
   );

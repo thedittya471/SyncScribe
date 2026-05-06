@@ -6,6 +6,7 @@ import ImagePage from './pages/Image'
 import MediaPage from './pages/Media'
 import OthersPage from './pages/Others'
 import TrashPage from './pages/Trash'
+import SharedPage from './pages/Shared'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Layout from './components/Layout'
@@ -49,6 +50,7 @@ const App = () => {
                 <Route path="/image" element={<ImagePage />} />
                 <Route path="/media" element={<MediaPage />} />
                 <Route path="/others" element={<OthersPage />} />
+                <Route path="/shared" element={<SharedPage />} />
                 <Route path="/trash" element={<TrashPage />} />
               </Route>
               

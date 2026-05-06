@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Search, CloudUpload } from 'lucide-react';
+import { Search, CloudUpload, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useFiles } from '../context/FileContext';
 import SearchOverlay from './SearchOverlay';
 
@@ -63,6 +64,13 @@ const Topbar = () => {
 
       {/* Actions */}
       <div className="flex items-center gap-5 ml-auto">
+        <Link 
+          to="/trash" 
+          className="w-12 h-12 flex items-center justify-center bg-white text-[#A3B2C7] hover:text-[#FA7275] rounded-full shadow-[0_4px_15px_rgba(0,0,0,0.05)] transition-all hover:shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:-translate-y-0.5"
+          title="Trash"
+        >
+          <Trash2 size={22} strokeWidth={2.5} />
+        </Link>
         <input
           type="file"
           ref={fileInputRef}

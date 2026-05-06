@@ -86,7 +86,9 @@ const getFilesByType = async (req, res) => {
     query.type = { $in: ["archive", "code", "other"] };
   }
 
-  const files = await File.find(query).sort({ createdAt: -1 });
+  const files = await File.find(query)
+    .populate("permissions.user", "username email fullName")
+    .sort({ createdAt: -1 });
 
   return res
     .status(200)
@@ -144,6 +146,7 @@ const getDashboardData = async (req, res) => {
 const getRecentFiles = async (req, res) => {
   const userId = req.user._id;
   const files = await File.find({ owner: userId, isTrashed: false })
+    .populate("permissions.user", "username email fullName")
     .sort({ createdAt: -1 })
     .limit(10);
 
@@ -166,7 +169,9 @@ const searchFiles = async (req, res) => {
     owner: userId,
     isTrashed: false,
     name: { $regex: query, $options: "i" },
-  }).limit(20);
+  })
+    .populate("permissions.user", "username email fullName")
+    .limit(20);
 
   return res
     .status(200)

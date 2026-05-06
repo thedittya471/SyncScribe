@@ -138,6 +138,62 @@ export const FileProvider = ({ children }) => {
     }
   };
 
+  const shareFile = async (fileId, email, role = 'viewer') => {
+    try {
+      showNotification('loading', 'Sharing file...');
+      const response = await api.patch(`/files/share/${fileId}`, { email, role });
+      const updatedFile = response.data.data;
+
+      setFiles(prev => prev.map(file => file._id === fileId ? updatedFile : file));
+      showNotification('success', `File shared with ${email}`);
+      return updatedFile;
+    } catch (error) {
+      const msg = error.response?.data?.message || 'Sharing failed';
+      showNotification('error', msg);
+      throw error.response?.data || error.message;
+    }
+  };
+
+  const revokeShareAccess = async (fileId, userId) => {
+    try {
+      showNotification('loading', 'Revoking access...');
+      const response = await api.patch(`/files/revoke/${fileId}`, { userId });
+      const updatedFile = response.data.data;
+
+      setFiles(prev => prev.map(file => file._id === fileId ? updatedFile : file));
+      showNotification('success', 'Access revoked successfully');
+      return updatedFile;
+    } catch (error) {
+      const msg = error.response?.data?.message || 'Revocation failed';
+      showNotification('error', msg);
+      throw error.response?.data || error.message;
+    }
+  };
+
+  const getSharedFiles = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await api.get('/files/shared-with-me');
+      setFiles(response.data.data);
+    } catch (error) {
+      console.error('Error fetching shared files:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const getSharedByMeFiles = useCallback(async () => {
+    setLoading(true);
+    try {
+      const response = await api.get('/files/shared-by-me');
+      setFiles(response.data.data);
+    } catch (error) {
+      console.error('Error fetching shared by me files:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const searchGlobalFiles = async (query) => {
     try {
       const { data } = await api.get(`/files/search?query=${query}`);
@@ -163,6 +219,10 @@ export const FileProvider = ({ children }) => {
       deletePermanently,
       restoreFromTrash,
       downloadFile,
+      shareFile,
+      revokeShareAccess,
+      getSharedFiles,
+      getSharedByMeFiles,
       searchGlobalFiles,
       searchTerm,
       setSearchTerm
