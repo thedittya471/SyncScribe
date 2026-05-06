@@ -6,6 +6,7 @@ import {
   uploadOnCloudinary,
   deleteFromCloudinary,
 } from "../utils/cloudinary.js";
+import fs from "fs";
 
 const uploadFile = async (req, res) => {
   const localFilePath = req.file?.path;
