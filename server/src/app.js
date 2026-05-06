@@ -17,12 +17,23 @@ const swaggerDocument = JSON.parse(
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 
-app.use(cors(
-    {
-        origin: process.env.CORS_ORIGIN,
-        credentials: true,
-    }
-))
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  const allowedOrigins = [process.env.CORS_ORIGIN, 'http://localhost:5174'];
+  
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
 
 app.use(express.json({ limit: '16kb' }));
 app.use(express.urlencoded({ extended: true, limit: '16kb' }));

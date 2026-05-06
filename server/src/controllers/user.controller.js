@@ -89,6 +89,7 @@ const loginUser = async (req, res) => {
   const options = {
     httpOnly: true,
     secure: true,
+    sameSite: 'none',
   };
 
   return res
@@ -120,6 +121,7 @@ const logOutUser = async (req, res) => {
     const options = {
         httpOnly: true,
         secure: true,
+        sameSite: 'none',
     };
 
     return res
@@ -159,6 +161,7 @@ const refreshAccessToken = async (req, res) => {
     const options = {
         httpOnly: true,
         secure: true,
+        sameSite: 'none',
     };
 
         return res
