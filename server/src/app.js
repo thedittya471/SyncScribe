@@ -12,7 +12,7 @@ const __dirname = path.dirname(__filename)
 const app = express()
 
 const swaggerDocument = JSON.parse(
-    fs.readFileSync(path.resolve(__dirname, './docs/swagger.json'), 'utf-8')
+  fs.readFileSync(path.resolve(__dirname, './docs/swagger.json'), 'utf-8')
 )
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
@@ -20,15 +20,15 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use((req, res, next) => {
   const origin = req.headers.origin;
   const allowedOrigins = [process.env.CORS_ORIGIN, 'http://localhost:5174'];
-  
+
   if (allowedOrigins.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
-  
+
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, content-type, Authorization');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
-  
+
   if (req.method === 'OPTIONS') {
     return res.sendStatus(200);
   }

@@ -80,7 +80,7 @@ const Dashboardbox = ({ icon, title, size, lastUpdateTime, iconColor = '#56B8FF'
         </div>
 
         {/* Card content */}
-        <div className="flex flex-col items-center px-5 pb-5">
+        <div className="flex flex-col items-center px-5 pt-5 pb-5">
           {/* Title */}
           <h3 className="text-[#333F4E] text-base font-semibold mb-3 transition-colors duration-200 group-hover:text-[#1a202c]">
             {title || 'Images'}
