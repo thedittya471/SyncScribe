@@ -20,7 +20,7 @@ const ActionItem = ({ icon: Icon, label, color, onClick }) => (
 const FileActionDropdown = ({ id, fileName, onClose, rect, onRename, onMoveToTrash, onShowDetails, onShare, onDownload }) => {
   const content = (
     <div 
-      className="fixed bg-white rounded-[20px] shadow-[0_25px_60px_rgba(0,0,0,0.12)] z-[20000] border border-[#F2F4F8] animate-in fade-in zoom-in-95 duration-300 flex flex-col pointer-events-auto overflow-hidden font-['Poppins',sans-serif]"
+      className="fixed bg-white rounded-[20px] shadow-[0_25px_60px_rgba(0,0,0,0.12)] z-20000 border border-[#F2F4F8] animate-in fade-in zoom-in-95 duration-300 flex flex-col pointer-events-auto overflow-hidden font-['Poppins',sans-serif]"
       style={{ 
         top: Math.max(20, rect.top + rect.height/2 - 130), 
         left: rect.left + rect.width/2 - 120,

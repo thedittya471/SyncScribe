@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Cloud, Shield, Zap, ArrowRight, FileText, Image as ImageIcon, Video, Folder, Lock, Share2, Search } from 'lucide-react';
+import { Cloud, Shield, Zap, ArrowRight, FileText, Image as ImageIcon, Video, Folder, Lock, Share2, Search, Menu, X } from 'lucide-react';
 
 const Landing = () => {
   const { user } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-rose-100 selection:text-rose-600 overflow-x-hidden font-sans">
@@ -16,13 +17,13 @@ const Landing = () => {
       </div>
 
       {/* Navbar */}
-      <nav className="fixed top-0 w-full z-50 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-3 bg-white/70 backdrop-blur-xl border border-white/20 rounded-2xl shadow-sm">
-          <div className="flex items-center gap-3 group cursor-pointer">
-            <div className="w-10 h-10 bg-gradient-to-br from-rose-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-rose-500/20 group-hover:rotate-12 transition-transform">
-              <Cloud className="text-white w-6 h-6" />
+      <nav className="fixed top-0 w-full z-50 px-4 md:px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-6 py-3 bg-white/80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-sm">
+          <div className="flex items-center gap-2 md:gap-3 group cursor-pointer">
+            <div className="w-8 h-8 md:w-10 md:h-10 bg-linear-to-br from-rose-500 to-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-rose-500/20 group-hover:rotate-12 transition-transform">
+              <Cloud className="text-white w-5 h-5 md:w-6 md:h-6" />
             </div>
-            <span className="text-xl font-bold tracking-tight text-slate-900">SyncScribe</span>
+            <span className="text-lg md:text-xl font-bold tracking-tight text-slate-900">SyncScribe</span>
           </div>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-500">
@@ -31,34 +32,70 @@ const Landing = () => {
             <a href="#security" className="hover:text-slate-900 transition-colors">Security</a>
           </div>
 
-          <div className="flex items-center gap-4">
-            {user ? (
-              <Link to="/dashboard" className="px-6 py-2 bg-slate-900 text-white font-bold rounded-xl hover:bg-black transition-all active:scale-95 shadow-lg shadow-black/5">
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                <Link to="/login" className="text-slate-600 hover:text-slate-900 transition-colors font-semibold">Login</Link>
-                <Link to="/signup" className="px-6 py-2.5 bg-gradient-to-r from-rose-500 to-orange-500 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-rose-500/30 transition-all active:scale-95">
-                  Get Started
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="hidden sm:flex items-center gap-4">
+              {user ? (
+                <Link to="/dashboard" className="px-6 py-2 bg-slate-900 text-white font-bold rounded-xl hover:bg-black transition-all active:scale-95 shadow-lg shadow-black/5">
+                  Dashboard
                 </Link>
-              </>
-            )}
+              ) : (
+                <>
+                  <Link to="/login" className="text-slate-600 hover:text-slate-900 transition-colors font-semibold">Login</Link>
+                  <Link to="/signup" className="px-6 py-2.5 bg-linear-to-r from-rose-500 to-orange-500 text-white font-bold rounded-xl hover:shadow-xl hover:shadow-rose-500/30 transition-all active:scale-95">
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="md:hidden p-2 text-slate-600 hover:text-slate-900 transition-colors"
+            >
+              {isMenuOpen ? <X /> : <Menu />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-20 left-4 right-4 bg-white rounded-2xl border border-slate-100 shadow-xl p-6 flex flex-col gap-6 z-50 animate-in fade-in slide-in-from-top-4 duration-300">
+            <div className="flex flex-col gap-4 text-slate-600 font-medium">
+              <a href="#features" onClick={() => setIsMenuOpen(false)} className="hover:text-slate-900">Features</a>
+              <a href="#preview" onClick={() => setIsMenuOpen(false)} className="hover:text-slate-900">Preview</a>
+              <a href="#security" onClick={() => setIsMenuOpen(false)} className="hover:text-slate-900">Security</a>
+            </div>
+            <hr className="border-slate-100" />
+            <div className="flex flex-col gap-3">
+              {user ? (
+                <Link to="/dashboard" onClick={() => setIsMenuOpen(false)} className="w-full py-3 bg-slate-900 text-white text-center font-bold rounded-xl">
+                  Dashboard
+                </Link>
+              ) : (
+                <>
+                  <Link to="/login" onClick={() => setIsMenuOpen(false)} className="w-full py-3 text-slate-900 text-center font-bold border border-slate-100 rounded-xl">
+                    Login
+                  </Link>
+                  <Link to="/signup" onClick={() => setIsMenuOpen(false)} className="w-full py-3 bg-linear-to-r from-rose-500 to-orange-500 text-white text-center font-bold rounded-xl">
+                    Get Started
+                  </Link>
+                </>
+              )}
+            </div>
+          </div>
+        )}
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-40 pb-20 px-6 z-10">
+      <section className="relative pt-32 md:pt-40 pb-16 md:pb-20 px-4 md:px-6 z-10">
         <div className="max-w-7xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-50 border border-rose-100 text-rose-500 text-xs font-bold mb-8 uppercase tracking-widest animate-bounce">
             <Zap className="w-4 h-4 fill-rose-500" />
             <span>Next-Gen Cloud Storage</span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl font-black tracking-tight mb-8 leading-none text-slate-900">
+          <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tight mb-8 leading-none text-slate-900">
             Store. Sync. <br />
-            <span className="bg-gradient-to-r from-rose-500 via-orange-400 to-rose-500 bg-[length:200%_auto] animate-gradient bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-rose-500 via-orange-400 to-rose-500 bg-size-[200%_auto] animate-gradient bg-clip-text text-transparent">
               Scribe Forever.
             </span>
           </h1>
@@ -73,15 +110,12 @@ const Landing = () => {
               {user ? "Launch App" : "Start Free Trial"}
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </Link>
-            <button className="px-10 py-4 bg-white border border-slate-200 hover:bg-slate-50 transition-all rounded-2xl font-bold text-lg text-slate-900 shadow-sm">
-              Watch Demo
-            </button>
           </div>
 
           {/* Hero Preview */}
           <div id="preview" className="relative max-w-5xl mx-auto group">
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent z-10" />
-            <div className="absolute -inset-1 bg-gradient-to-r from-rose-500 to-orange-500 rounded-[2.5rem] blur opacity-10 group-hover:opacity-20 transition duration-1000" />
+            <div className="absolute inset-0 bg-linear-to-t from-slate-50 via-transparent to-transparent z-10" />
+            <div className="absolute -inset-1 bg-linear-to-r from-rose-500 to-orange-500 rounded-[2.5rem] blur opacity-10 group-hover:opacity-20 transition duration-1000" />
             <div className="relative rounded-[2.5rem] overflow-hidden border border-white/50 shadow-2xl">
               <img 
                 src="/hero-preview-light.png" 
@@ -94,7 +128,7 @@ const Landing = () => {
       </section>
 
       {/* Feature Grid */}
-      <section id="features" className="py-32 px-6 max-w-7xl mx-auto relative z-10">
+      <section id="features" className="py-20 md:py-32 px-4 md:px-6 max-w-7xl mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
             { icon: Shield, title: 'Military Grade', desc: 'End-to-end encryption ensures your data remains yours and yours alone.', color: 'rose' },
@@ -114,7 +148,7 @@ const Landing = () => {
 
       {/* Stats Section */}
       <section className="py-20 border-y border-slate-100 bg-white z-10 relative">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12 text-center">
           {[
             { label: 'Files Secured', value: '10M+' },
             { label: 'Uptime', value: '99.9%' },
@@ -130,7 +164,7 @@ const Landing = () => {
       </section>
 
       {/* Categories */}
-      <section className="max-w-6xl mx-auto px-6 py-32 z-10 relative">
+      <section className="max-w-6xl mx-auto px-4 md:px-6 py-20 md:py-32 z-10 relative">
         <div className="text-center mb-20">
           <h2 className="text-4xl font-bold mb-4 text-slate-900">Everything in its place</h2>
           <p className="text-slate-500 font-medium">Smart categorization for every type of file you own.</p>
@@ -142,7 +176,7 @@ const Landing = () => {
               { icon: Video, label: 'Media', color: 'text-purple-500', bg: 'bg-purple-50' },
               { icon: Folder, label: 'Projects', color: 'text-orange-500', bg: 'bg-orange-50' }
             ].map((item, i) => (
-              <div key={i} className="flex flex-col items-center gap-6 p-8 rounded-[2rem] bg-white border border-slate-100 group cursor-default hover:border-rose-100 hover:shadow-lg transition-all">
+              <div key={i} className="flex flex-col items-center gap-6 p-8 rounded-4xl bg-white border border-slate-100 group cursor-default hover:border-rose-100 hover:shadow-lg transition-all">
                 <div className={`w-20 h-20 ${item.bg} rounded-3xl flex items-center justify-center transition-all duration-300 group-hover:scale-110 group-hover:rotate-6 shadow-sm`}>
                   <item.icon className={`w-10 h-10 ${item.color}`} />
                 </div>
@@ -154,7 +188,7 @@ const Landing = () => {
 
       {/* Footer */}
       <footer className="py-20 bg-white border-t border-slate-100 z-10 relative">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-12 mb-12">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-rose-500 rounded-xl flex items-center justify-center shadow-lg shadow-rose-500/20">

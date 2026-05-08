@@ -14,7 +14,7 @@ const navItems = [
   { name: 'Shared', path: '/shared', icon: Users },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, onClose }) => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
@@ -25,7 +25,11 @@ const Sidebar = () => {
   };
 
   return (
-    <aside className="w-[300px] h-screen bg-white shadow-[0_0_40px_rgba(0,0,0,0.03)] flex flex-col pt-12 pb-8 px-6 sticky top-0 shrink-0 md:flex z-50">
+    <aside className={`
+      fixed lg:sticky top-0 left-0 z-50 h-screen bg-white shadow-[0_0_40px_rgba(0,0,0,0.03)] flex flex-col pt-12 pb-8 px-6 shrink-0 transition-all duration-300 overflow-y-auto custom-scrollbar
+      w-[300px] lg:translate-x-0
+      ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+    `}>
       
       {/* Logo */}
       <div className="flex items-center gap-2 mb-12 ml-4">
@@ -42,6 +46,7 @@ const Sidebar = () => {
           <NavLink
             key={item.name}
             to={item.path}
+            onClick={onClose}
             className={({ isActive }) => `
               flex items-center gap-4 px-6 py-4 rounded-3xl font-semibold text-[1.05rem] transition-all duration-300
               ${isActive 
@@ -64,7 +69,7 @@ const Sidebar = () => {
       </nav>
 
       {/* Illustration Block */}
-      <div className="bg-[#FFF4F4] rounded-[2.5rem] mt-10 mb-8 pt-8 pb-4 px-6 flex justify-center items-center relative">
+      <div className="hidden lg:flex bg-[#FFF4F4] rounded-[2.5rem] mt-10 mb-8 pt-8 pb-4 px-6 justify-center items-center relative">
         <img 
           src={heroImage} 
           alt="Illustration" 

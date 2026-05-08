@@ -87,7 +87,7 @@ const ShareModal = ({ fileData, onClose }) => {
   };
 
   const content = (
-    <div className="fixed inset-0 z-[2000] flex items-center justify-center font-['Poppins',sans-serif]">
+    <div className="fixed inset-0 z-2000 flex items-center justify-center font-['Poppins',sans-serif]">
       <div className="absolute inset-0 bg-[#0F172A]/20 backdrop-blur-sm animate-in fade-in duration-300" onClick={onClose} />
       
       <div className="relative bg-white w-[500px] rounded-[40px] shadow-2xl p-10 animate-in fade-in zoom-in-95 duration-300 max-h-[90vh] overflow-y-auto">
@@ -160,7 +160,7 @@ const ShareModal = ({ fileData, onClose }) => {
         </div>
 
         <div className="mb-8 relative" ref={suggestionRef}>
-          <label className="block text-[#333F4E] text-lg font-bold mb-3 flex items-center gap-2">
+          <label className="block text-[#333F4E] text-lg font-bold mb-3 items-center gap-2">
             <UserPlus size={20} className="text-[#FA7275]" />
             Share with user:
           </label>
@@ -176,7 +176,7 @@ const ShareModal = ({ fileData, onClose }) => {
             
             {/* Suggestions Dropdown */}
             {showSuggestions && suggestions.length > 0 && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#F2F4F8] rounded-2xl shadow-xl z-[2010] overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-[#F2F4F8] rounded-2xl shadow-xl z-2010 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                 {suggestions.map((user) => (
                   <button
                     key={user.email}

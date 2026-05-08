@@ -34,15 +34,23 @@ const Signup = () => {
   };
 
   return (
-    <div className="h-screen w-full flex flex-col lg:flex-row font-sans bg-white overflow-hidden">
+    <div className="min-h-screen w-full flex flex-col lg:flex-row font-sans bg-white">
         
         {/* Left Panel */}
         <AuthLeftPanel />
 
         {/* Right Panel - Form */}
-        <div className="w-full lg:w-[55%] p-8 sm:p-12 xl:p-24 flex flex-col justify-center h-screen overflow-y-auto">
+        <div className="w-full lg:w-[55%] p-6 sm:p-12 xl:p-24 flex flex-col justify-center">
           <div className="w-full max-w-[480px] mx-auto lg:ml-12 xl:ml-20 my-auto">
-            <h2 className="text-[3rem] xl:text-[3.5rem] font-extrabold text-[#2C3647] mb-10">Sign Up</h2>
+            {/* Mobile Logo */}
+            <div className="flex lg:hidden items-center gap-3 mb-10">
+              <div className="relative flex items-center w-12 h-8">
+                <div className="absolute left-0 w-8 h-8 bg-[#FA7275]/30 rounded-full"></div>
+                <div className="absolute left-4 w-8 h-8 bg-[#FA7275] rounded-full"></div>
+              </div>
+              <span className="text-2xl font-bold text-[#2C3647]">SyncScribe</span>
+            </div>
+            <h2 className="text-4xl sm:text-[3rem] xl:text-[3.5rem] font-extrabold text-[#2C3647] mb-8 lg:mb-10">Sign Up</h2>
             
             <form className="space-y-5" onSubmit={handleSubmit}>
               <div className="w-full bg-white rounded-2xl p-3 px-5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-gray-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-shadow">

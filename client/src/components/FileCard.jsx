@@ -58,8 +58,8 @@ const FileCard = ({
     <div 
       ref={cardRef}
       onClick={handleOpen}
-      className={`relative w-[195px] h-[170px] bg-white rounded-[16px] font-['Poppins',sans-serif] group cursor-pointer transition-all duration-300 ease-out 
-      ${isDropdownOpen ? 'z-[110] shadow-2xl scale-[1.02]' : 'z-10 shadow-md hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1'}`}
+      className={`relative w-full h-[170px] bg-white rounded-[16px] font-['Poppins',sans-serif] group cursor-pointer transition-all duration-300 ease-out 
+      ${isDropdownOpen ? 'z-110 shadow-2xl scale-[1.02]' : 'z-10 shadow-md hover:shadow-xl hover:shadow-black/5 hover:-translate-y-1'}`}
     >
       {/* ── File icon/Preview (top-left) ── */}
       <div className="absolute left-[14px] top-[14px] transition-transform duration-300 group-hover:scale-105">
@@ -75,7 +75,7 @@ const FileCard = ({
       </div>
 
       {/* ── Action Area (top-right) ── */}
-      <div className="absolute right-[12px] top-[14px] z-[101]">
+      <div className="absolute right-[12px] top-[14px] z-101">
         {isTrashed ? (
           <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button 

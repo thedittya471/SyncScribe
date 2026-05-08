@@ -6,7 +6,7 @@ const Notification = ({ type, message, visible }) => {
 
   return (
     <div 
-      className={`fixed bottom-8 right-8 z-[1000] flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 transform font-['Poppins',sans-serif]
+      className={`fixed bottom-8 right-8 z-1000 flex items-center gap-3 px-6 py-4 rounded-2xl shadow-2xl transition-all duration-500 transform font-['Poppins',sans-serif]
         ${visible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}
         ${type === 'loading' ? 'bg-[#333F4E] text-white' : 
           type === 'success' ? 'bg-[#27AE60] text-white' : 
