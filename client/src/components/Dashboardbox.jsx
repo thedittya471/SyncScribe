@@ -31,12 +31,12 @@ const iconPaths = {
   ),
 }
 
-const Dashboardbox = ({ icon, title, size, lastUpdateTime, iconColor = '#56B8FF', iconType = 'images' }) => {
+const Dashboardbox = ({ icon, title, size, lastUpdateTime, iconColor = '#56B8FF', iconType = 'images', onClick }) => {
   // Unique filter ID to avoid SVG conflicts when rendering multiple cards
   const filterId = `filter_${iconType}_${title?.replace(/\s/g, '') || 'default'}`
 
   return (
-    <div className="relative w-full mt-6 font-['Poppins',sans-serif] group cursor-pointer">
+    <div className="relative w-full mt-6 font-['Poppins',sans-serif] group cursor-pointer" onClick={onClick}>
       {/* Floating icon — positioned to overlap the top-left corner */}
       <div className="absolute -top-5 -left-5 z-10 transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-110">
         {icon || (

@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Dashboardbox from '../components/Dashboardbox'
 import { useFiles } from '../context/FileContext'
 import { useFileActions } from '../context/FileActionContext'
@@ -69,6 +70,7 @@ const DotsMenu = () => (
 const Dashboard = () => {
   const { dashboardData, recentFiles, getDashboardData, getRecentFiles } = useFiles();
   const { openDropdown } = useFileActions();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getDashboardData();
@@ -92,10 +94,10 @@ const Dashboard = () => {
 
   const folderCategories = useMemo(() => {
     const categories = [
-      { id: 'document', title: 'Documents', key: 'Documents', color: '#56B8FF', type: 'documents' },
-      { id: 'image', title: 'Images', key: 'Images', color: '#FA7275', type: 'images' },
-      { id: 'media', title: 'Media', key: 'Video', color: '#FDAB5C', type: 'video' },
-      { id: 'others', title: 'Others', key: 'Others', color: '#8C7CF0', type: 'others' }
+      { id: 'document', title: 'Documents', key: 'Documents', color: '#56B8FF', type: 'documents', path: '/document' },
+      { id: 'image', title: 'Images', key: 'Images', color: '#FA7275', type: 'images', path: '/image' },
+      { id: 'media', title: 'Media', key: 'Video', color: '#FDAB5C', type: 'video', path: '/media' },
+      { id: 'others', title: 'Others', key: 'Others', color: '#8C7CF0', type: 'others', path: '/others' }
     ];
 
     return categories.map(cat => {
@@ -162,6 +164,7 @@ const Dashboard = () => {
                   lastUpdateTime={folder.lastUpdateTime}
                   iconColor={folder.color}
                   iconType={folder.type}
+                  onClick={() => navigate(folder.path)}
                 />
               ))}
             </div>
