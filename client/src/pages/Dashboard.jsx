@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Dashboardbox from '../components/Dashboardbox'
 import { useFiles } from '../context/FileContext'
 import { useFileActions } from '../context/FileActionContext'
@@ -69,6 +70,7 @@ const DotsMenu = () => (
 const Dashboard = () => {
   const { dashboardData, recentFiles, getDashboardData, getRecentFiles } = useFiles();
   const { openDropdown } = useFileActions();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getDashboardData();
@@ -92,10 +94,10 @@ const Dashboard = () => {
 
   const folderCategories = useMemo(() => {
     const categories = [
-      { id: 'document', title: 'Documents', key: 'Documents', color: '#56B8FF', type: 'documents' },
-      { id: 'image', title: 'Images', key: 'Images', color: '#FA7275', type: 'images' },
-      { id: 'media', title: 'Media', key: 'Video', color: '#FDAB5C', type: 'video' },
-      { id: 'others', title: 'Others', key: 'Others', color: '#8C7CF0', type: 'others' }
+      { id: 'document', title: 'Documents', key: 'Documents', color: '#56B8FF', type: 'documents', path: '/document' },
+      { id: 'image', title: 'Images', key: 'Images', color: '#FA7275', type: 'images', path: '/image' },
+      { id: 'media', title: 'Media', key: 'Video', color: '#FDAB5C', type: 'video', path: '/media' },
+      { id: 'others', title: 'Others', key: 'Others', color: '#8C7CF0', type: 'others', path: '/others' }
     ];
 
     return categories.map(cat => {
@@ -123,11 +125,11 @@ const Dashboard = () => {
         .animate-fade-in-right { animation: fadeInRight 0.5s ease-out both; }
       `}</style>
 
-      <div className="max-w-[1100px] mx-auto bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl shadow-black/5 p-10 border border-white/40">
+      <div className="max-w-[1100px] mx-auto bg-white/70 backdrop-blur-xl rounded-3xl shadow-xl shadow-black/5 p-4 sm:p-10 border border-white/40">
         <div className="flex gap-10 flex-col lg:flex-row">
 
           <div className="flex-1">
-            <div className="rounded-2xl p-8 flex items-center gap-8 transition-all duration-300 hover:shadow-lg hover:shadow-red-200/50 hover:scale-[1.02] cursor-pointer animate-fade-in-up"
+            <div className="rounded-2xl p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 sm:gap-8 transition-all duration-300 hover:shadow-lg hover:shadow-red-200/50 hover:scale-[1.02] cursor-pointer animate-fade-in-up"
               style={{
                 background: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)',
               }}
@@ -140,9 +142,9 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              <div className="text-white">
+              <div className="text-white text-center sm:text-left">
                 <h2 className="text-xl font-semibold mb-1">Available Storage</h2>
-                <div className="flex flex-col gap-0.5">
+                <div className="flex flex-col items-center sm:items-start gap-0.5">
                   <p className="text-base font-medium opacity-95">
                     Used: {storageStats.used} / {storageStats.total}
                   </p>
@@ -153,7 +155,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 mt-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
               {folderCategories.map((folder) => (
                 <Dashboardbox
                   key={folder.id}
@@ -162,6 +164,7 @@ const Dashboard = () => {
                   lastUpdateTime={folder.lastUpdateTime}
                   iconColor={folder.color}
                   iconType={folder.type}
+                  onClick={() => navigate(folder.path)}
                 />
               ))}
             </div>

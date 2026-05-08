@@ -56,7 +56,7 @@ const SearchOverlay = ({ isOpen, onClose, query }) => {
   if (!isOpen) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-[10000] flex flex-col items-center pt-[10vh] px-4 font-['Poppins',sans-serif]">
+    <div className="fixed inset-0 z-10000 flex flex-col items-center pt-0 sm:pt-[10vh] px-0 sm:px-4 font-['Poppins',sans-serif]">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-[#0F172A]/40 backdrop-blur-md animate-fade-in" 
@@ -64,7 +64,7 @@ const SearchOverlay = ({ isOpen, onClose, query }) => {
       />
       
       {/* Search Container */}
-      <div className="relative w-full max-w-[700px] bg-white rounded-[28px] shadow-2xl shadow-black/20 overflow-hidden animate-scale-up border border-white/20">
+      <div className="relative w-full h-full sm:h-auto max-w-[700px] bg-white sm:rounded-[28px] shadow-2xl shadow-black/20 overflow-hidden animate-scale-up border border-white/20 flex flex-col">
         {/* Header */}
         <div className="flex items-center gap-4 px-6 py-5 border-b border-gray-100">
           <Search className="text-[#A3B2C7]" size={22} strokeWidth={2.5} />
@@ -80,7 +80,7 @@ const SearchOverlay = ({ isOpen, onClose, query }) => {
         </div>
 
         {/* Results Area */}
-        <div className="max-h-[60vh] overflow-y-auto custom-scrollbar">
+        <div className="flex-1 sm:max-h-[60vh] overflow-y-auto custom-scrollbar">
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
               <div className="w-10 h-10 border-4 border-[#FA7275]/20 border-t-[#FA7275] rounded-full animate-spin" />
@@ -94,7 +94,7 @@ const SearchOverlay = ({ isOpen, onClose, query }) => {
                   onClick={() => { window.open(file.url, '_blank'); onClose(); }}
                   className="group flex items-center gap-4 p-3 rounded-2xl hover:bg-[#F8FAFC] transition-all cursor-pointer border border-transparent hover:border-[#E2E8F0] relative"
                 >
-                  <div className="w-12 h-12 flex-shrink-0 relative">
+                  <div className="w-12 h-12 shrink-0 relative">
                     <div className="absolute inset-0 scale-[0.6] origin-center">
                       <FileTypeIcon type={file.type} name={file.name} />
                     </div>

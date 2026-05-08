@@ -118,7 +118,7 @@ export const FileActionProvider = ({ children }) => {
       {children}
       {activeFile && (
         <>
-          <div className="fixed inset-0 z-[999] bg-transparent" onClick={closeDropdown} />
+          <div className="fixed inset-0 z-999 bg-transparent" onClick={closeDropdown} />
           <FileActionDropdown 
             id={activeFile.id}
             fileName={activeFile.name} 

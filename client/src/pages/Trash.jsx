@@ -35,10 +35,10 @@ const Trash = () => {
 
             <div className="max-w-[1100px] mx-auto">
                 <div className="mb-8">
-                    <h1 className="text-[#333F4E] text-4xl font-extrabold mb-1 anim-fade-up">
+                    <h1 className="text-[#333F4E] text-3xl sm:text-4xl font-extrabold mb-1 anim-fade-up">
                         Trash
                     </h1>
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
                         <div className="flex items-center gap-4 anim-fade-up" style={{ animationDelay: '60ms' }}>
                             <p className="text-[#333F4E]/60 text-sm">
                                 Total: <span className="font-semibold">{files.length} items</span>
@@ -70,7 +70,7 @@ const Trash = () => {
                         <div className="w-10 h-10 border-4 border-[#FA7275]/20 border-t-[#FA7275] rounded-full animate-spin"></div>
                     </div>
                 ) : files.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-1.5 gap-y-3 justify-items-center">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {sortedFiles.map((file, index) => (
                             <div
                                 key={file._id}

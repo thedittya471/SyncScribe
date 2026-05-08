@@ -35,15 +35,15 @@ const Shared = () => {
 
             <div className="max-w-[1100px] mx-auto">
                 <div className="mb-8">
-                    <h1 className="text-[#333F4E] text-4xl font-extrabold mb-1 anim-fade-up">
+                    <h1 className="text-[#333F4E] text-3xl sm:text-4xl font-extrabold mb-1 anim-fade-up">
                         {activeTab === 'withMe' ? 'Shared with me' : 'Shared by me'}
                     </h1>
                     
-                    <div className="flex items-center justify-between mt-6">
-                        <div className="flex bg-[#F2F4F8] p-1 rounded-2xl anim-fade-up" style={{ animationDelay: '40ms' }}>
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between mt-6 gap-6">
+                        <div className="flex bg-[#F2F4F8] p-1 rounded-2xl anim-fade-up w-fit" style={{ animationDelay: '40ms' }}>
                             <button
                                 onClick={() => setActiveTab('withMe')}
-                                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
+                                className={`px-4 sm:px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
                                     activeTab === 'withMe' 
                                     ? 'bg-white text-[#FA7275] shadow-sm' 
                                     : 'text-[#A3B2C7] hover:text-[#333F4E]'
@@ -53,7 +53,7 @@ const Shared = () => {
                             </button>
                             <button
                                 onClick={() => setActiveTab('byMe')}
-                                className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
+                                className={`px-4 sm:px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 ${
                                     activeTab === 'byMe' 
                                     ? 'bg-white text-[#FA7275] shadow-sm' 
                                     : 'text-[#A3B2C7] hover:text-[#333F4E]'
@@ -63,7 +63,7 @@ const Shared = () => {
                             </button>
                         </div>
 
-                        <div className="flex items-center gap-6 anim-fade-up" style={{ animationDelay: '80ms' }}>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 anim-fade-up" style={{ animationDelay: '80ms' }}>
                             <p className="text-[#333F4E]/60 text-sm">
                                 Total: <span className="font-bold text-[#333F4E]">{totalSize}</span>
                             </p>
@@ -90,7 +90,7 @@ const Shared = () => {
                         </p>
                     </div>
                 ) : sortedFiles.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-y-10 justify-items-center">
+                    <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                         {sortedFiles.map((file, idx) => (
                             <div
                                 key={file._id}
